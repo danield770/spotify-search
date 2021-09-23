@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 
 const SearchForm = ({ onFormSubmit, onSort }) => {
   const inputRef = useRef();
@@ -20,28 +20,41 @@ const SearchForm = ({ onFormSubmit, onSort }) => {
     }
   };
   return (
-    <form onSubmit={handleSubmit}>
-      <input type='text' placeholder='Search album or atrist' ref={inputRef} />
-      <button>Search</button>
-      <span>Sort By:</span>
-      <select name='sort' onChange={handleChange}>
-        <option value=''>Default</option>
-        <option value='name'>Album name</option>
-        <option value='artists,0,name'>Artist name</option>
-        <option value='album,release_date'>Release Date</option>
-        <option value='popularity'>Popularity</option>
-      </select>
-      <span>Filter By:</span>
-      <select name='filter' onChange={handleChange}>
-        <option value=''>Any time</option>
-        <option value={currentYear}>Past year</option>
-        <option value={`${currentYear - 1}-${currentYear}`}>
-          Past 2 years
-        </option>
-        <option value={`${currentYear - 4}-${currentYear}`}>
-          Past 5 years
-        </option>
-      </select>
+    <form className='form' onSubmit={handleSubmit}>
+      <div className='form__search-wpr'>
+        <input
+          className='form__input'
+          type='text'
+          placeholder='Search album or artist'
+          ref={inputRef}
+        />
+        <button className='form__btn'>Search</button>
+      </div>
+
+      <div className='form__sort-wpr'>
+        <label htmlFor='form__sort'>Sort By:</label>
+        <select id='form__sort' name='sort' onChange={handleChange}>
+          <option value=''>Default</option>
+          <option value='name'>Album name</option>
+          <option value='artist_name'>Artist name</option>
+          <option value='release_date'>Release Date</option>
+          <option value='popularity'>Popularity</option>
+        </select>
+      </div>
+
+      <div className='form__filter-wpr'>
+        <label htmlFor='form__filter'>Filter By:</label>
+        <select id='form__filter' name='filter' onChange={handleChange}>
+          <option value=''>Any time</option>
+          <option value={currentYear}>Past year</option>
+          <option value={`${currentYear - 1}-${currentYear}`}>
+            Past 2 years
+          </option>
+          <option value={`${currentYear - 4}-${currentYear}`}>
+            Past 5 years
+          </option>
+        </select>
+      </div>
     </form>
   );
 };

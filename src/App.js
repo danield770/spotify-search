@@ -1,16 +1,24 @@
+import './App.css';
 import React, { useState, useEffect } from 'react';
 import SearchForm from './components/SearchForm';
 import Results from './components/Results';
 import Cookies from 'js-cookie';
 import { SpotifyAuth, Scopes } from 'react-spotify-auth';
-import { encodeSpaces } from './utils/helper';
+import { encodeSpaces, chooseRelevantItemData } from './utils/helper';
 
 const App = () => {
+  const initialState = {
+    items: [],
+    limit: 20,
+    previous: '',
+    next: '',
+    total: 0,
+  };
   const token = Cookies.get('spotifyAuthToken');
   console.log('rendering spotify app...');
   // const url = 'https://api.spotify.com/v1/search?query=Benny+Friedman+year:2021-2021&type=track&market=US&offset=0&limit=5';
   const [url, setUrl] = useState('');
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(initialState);
   const [sortBy, setSortBy] = useState('');
 
   useEffect(() => {
@@ -24,18 +32,30 @@ const App = () => {
     const getData = async () => {
       const res = await fetch(url, { headers });
       const json = await res.json();
-      console.log('setting data...');
-      setData(json.tracks);
+      console.log('setting data...', json);
+      if (json.error !== undefined) {
+        setData(json);
+      } else {
+        setData((previousData) => ({
+          ...previousData,
+          total: json.tracks.total,
+          next: json.tracks.next,
+          previous: json.tracks.previous,
+          items: [
+            ...previousData.items,
+            ...chooseRelevantItemData(json.tracks.items),
+          ],
+        }));
+      }
     };
     getData();
   }, [url, token]);
 
   const onFormSubmit = (input) => {
-    //e.preventDefault();
     const yearRange = input.filter ? `+year:${input.filter}` : '';
     const url = `https://api.spotify.com/v1/search?query=${encodeSpaces(
       input.text
-    )}${yearRange}&type=track&market=US&offset=0&limit=5`;
+    )}${yearRange}&type=track&market=US&offset=0`;
     console.log('url: ', url);
     setUrl(url);
   };
@@ -45,7 +65,15 @@ const App = () => {
   };
 
   return (
-    <div className='app'>
+    <main className={`app ${data?.items?.length > 0 ? 'has-data' : ''}`}>
+      <h1 className='search-header'>
+        <span aria-hidden='true'>
+          Sp<span className='icon-logo'>o</span>tify
+        </span>
+        <span className='offscreen'>Spotify</span>
+        <span className='icon-search'>Search</span>
+      </h1>
+
       <SearchForm onFormSubmit={onFormSubmit} onSort={onSort} />
       {token ? (
         <Results data={data} sortBy={sortBy} />
@@ -57,7 +85,7 @@ const App = () => {
           scopes={[Scopes.userReadPrivate, 'user-read-email']} // either style will work
         />
       )}
-    </div>
+    </main>
   );
 };
 export default App;
