@@ -4,7 +4,6 @@ import { chooseRelevantItemData } from '../utils/helper';
 function useFetch(url, options, offset) {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [hasNext, setHasNext] = useState(false);
 
   const sendQuery = useCallback(async () => {
     try {
@@ -14,13 +13,6 @@ function useFetch(url, options, offset) {
       const json = await res.json();
       setIsLoading(false);
       console.log('useFetch: setting data...', json);
-      //   setData({
-      //     href: json.tracks.href,
-      //     total: json.tracks.total,
-      //     next: json.tracks.next,
-      //     previous: json.tracks.previous,
-      //     items: [...chooseRelevantItemData(json.tracks.items)],
-      //   });
 
       if (json.error !== undefined) {
         setData(json);
@@ -38,7 +30,7 @@ function useFetch(url, options, offset) {
             items: [...chooseRelevantItemData(json.tracks.items)],
           };
         } else {
-          setHasNext(json.tracks.next !== null);
+          // setHasNext(json.tracks.next !== null);
           return {
             ...prev,
             next: json.tracks.next,
@@ -61,47 +53,6 @@ function useFetch(url, options, offset) {
   }, [url, sendQuery]);
 
   return { data, isLoading };
-  //   useEffect(() => {
-  //     console.log('useFetch: url: ', url);
-  //     if (!url) return;
-  //     console.log('headers: ', options);
-  //     setIsLoading(true);
-  //     fetch(url, { options })
-  //       .then((res) => res.json())
-  //       .then((json) => {
-  //         setIsLoading(false);
-  //         console.log('useFetch: setting data...', json);
-  //         setData((prev) => {
-  //           if (json?.tracks?.offset === 0) {
-  //             // hit a new request
-  //             return {
-  //               href: json.tracks.href,
-  //               total: json.tracks.total,
-  //               next: json.tracks.next,
-  //               previous: json.tracks.previous,
-  //               items: [...chooseRelevantItemData(json.tracks.items)],
-  //             };
-  //           } else {
-  //             return {
-  //               ...prev,
-  //               total: json?.tracks?.total,
-  //               next: json?.tracks?.next,
-  //               previous: json?.tracks?.previous,
-  //               items: [
-  //                 ...prev?.items,
-  //                 ...chooseRelevantItemData(json?.tracks?.items),
-  //               ],
-  //             };
-  //           }
-  //         });
-  //       })
-  //       .catch((err) => {
-  //         setIsLoading(false);
-  //         setData(err);
-  //       });
-  //   }, [url, options]);
-
-  //   return { data, isLoading };
 }
 
 export default useFetch;

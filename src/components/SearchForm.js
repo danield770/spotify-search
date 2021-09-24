@@ -20,7 +20,7 @@ const SearchForm = ({ onFormSubmit, onSort }) => {
     }
   };
   return (
-    <form className='form' onSubmit={handleSubmit}>
+    <form className='form sticky' onSubmit={handleSubmit}>
       <div className='form__search-wpr'>
         <input
           className='form__input'

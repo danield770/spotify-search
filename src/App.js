@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchForm from './components/SearchForm';
 import Results from './components/Results';
 import Cookies from 'js-cookie';
@@ -10,38 +10,16 @@ import {
   chooseRelevantItemData,
 } from './utils/helper';
 
-// import useFetch from './hooks/useFetch';
+// import useFetch from './hooks/useFetch'; // had an authentication problem here :(
 
 const App = () => {
   const token = Cookies.get('spotifyAuthToken');
-  console.log('token is: ', token);
-  console.log('rendering spotify app...');
+  // console.log('token is: ', token);
+  // console.log('rendering spotify app...');
   const [url, setUrl] = useState('');
   const [data, setData] = useState({});
   const [sortBy, setSortBy] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [hasNext, setHasNext] = useState(false);
-  const [offset, setOffset] = useState(0);
-  // const headers = {
-  //   'Content-Type': 'application/json',
-  //   Authorization: `Bearer ${token}`,
-  // };
-  // const { data, isLoading } = useFetch(url, headers, 0);
-
-  const observer = useRef();
-  const fifthLastItem = useCallback(
-    (node) => {
-      if (isLoading) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasNext) {
-          setHasNext((prev) => prev + 20);
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [isLoading, hasNext]
-  );
 
   useEffect(() => {
     if (!url) return;
@@ -50,10 +28,10 @@ const App = () => {
       Authorization: `Bearer ${token}`,
     };
     console.log('url: ', url);
-    console.log('headers: ', headers);
+
     const getData = async () => {
       setIsLoading(true);
-      const res = await fetch(`${url}&offset=${offset}`, { headers });
+      const res = await fetch(url, { headers });
       const json = await res.json();
       setIsLoading(false);
       console.log('setting data...', json);
@@ -73,11 +51,9 @@ const App = () => {
             items: [...chooseRelevantItemData(json.tracks.items)],
           };
         } else {
-          setHasNext(json.tracks.next !== null);
           return {
             ...prev,
             next: json.tracks.next,
-            previous: json.tracks.previous,
             items: [
               ...prev.items,
               ...chooseRelevantItemData(json.tracks.items),
@@ -87,31 +63,35 @@ const App = () => {
       });
     };
     getData();
-  }, [url, token, offset]);
+  }, [url, token]);
 
   const onFormSubmit = (input) => {
     const yearRange = input.filter ? `+year:${input.filter}` : '';
-    console.log('input text:', input.text);
-    console.log(
-      'decoded input text:',
-      encodeSpaces(supportUnicodeText(input.text))
-    );
+    // console.log('input text:', input.text);
+    // console.log(
+    //   'decoded input text:',
+    //   encodeSpaces(supportUnicodeText(input.text))
+    // );
 
     const url = `https://api.spotify.com/v1/search?query=${encodeSpaces(
       supportUnicodeText(input.text)
     )}${yearRange}&type=track&market=US`;
     console.log('url: ', url);
-    sortBy && setSortBy(sortBy);
+    sortBy && setSortBy(sortBy); // sortBy is '' by default
     setUrl(url);
   };
   const onSort = (value) => {
-    console.log('sort: ', value);
+    // console.log('sort: ', value);
     setSortBy(value);
+  };
+
+  const onFetchMore = (url) => {
+    setUrl(url);
   };
 
   return (
     <main className={`app ${data?.items?.length > 0 ? 'has-data' : ''}`}>
-      <h1 className='search-header'>
+      <h1 className='search-header sticky'>
         <span aria-hidden='true'>
           Sp<span className='icon-logo'>o</span>tify
         </span>
@@ -125,8 +105,7 @@ const App = () => {
           data={data}
           sortBy={sortBy}
           isLoading={isLoading}
-          observer={observer}
-          fifthLastItem={fifthLastItem}
+          onFetchMore={onFetchMore}
         />
       ) : (
         // Display the login page

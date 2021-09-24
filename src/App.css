@@ -44,6 +44,26 @@ body {
 .app:not(.has-data) .form__btn {
   border-radius: 0 1rem 1rem 0;
 }
+/* keep main header, form and result count in viewport */
+.has-data .sticky {
+  position: sticky;
+  z-index: 1;
+}
+.has-data .search-header {
+  top: 0;
+  margin: 0;
+  padding: 0.67em 0;
+  background-color: white;
+}
+.has-data .form {
+  top: 50px;
+  background-color: white;
+}
+.has-data .albums-count {
+  top: 117px;
+}
+/* TODO: find a less-hackier solution than sticky  */
+
 .search-header {
   color: var(--color);
   font-family: 'Lobster', cursive;
@@ -72,6 +92,7 @@ body {
   grid-template-rows: auto auto;
   grid-gap: 0.5rem;
   font-size: 0.9rem;
+  padding-bottom: 0.5rem;
 }
 .form__search-wpr {
   display: grid;
@@ -91,22 +112,22 @@ body {
   color: white;
   border: 0;
   padding: 0 0.5rem;
+  cursor: pointer;
 }
 .albums-count {
-  height: 2rem;
+  height: 3rem;
   margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--very-light-color);
+  background: var(--very-light-color) content-box;
   color: var(--dark-color);
 }
 .albums {
   list-style: none;
   margin: 0;
   padding: 0;
-  overflow: auto;
-  max-height: calc(100vh - 5rem);
 }
 
 .album {
@@ -147,6 +168,17 @@ dt {
 dd {
   margin: 0;
 }
+.btn--primary {
+  border: 1px solid var(--dark-color);
+  border-radius: 2rem;
+  height: 2.5rem;
+  background: none;
+  padding: 0 1rem;
+  color: green;
+  position: relative;
+  top: 2rem;
+  cursor: pointer;
+}
 .error {
   color: red;
   font-size: 0.8rem;
@@ -160,27 +192,24 @@ dd {
   width: 1px;
   overflow: hidden;
 }
-/* .spinner {
-  display: none;
-  align-items: center;
-} */
 
 .loading {
   display: flex;
   justify-content: center;
   align-items: center;
   color: var(--color);
+  margin: auto;
 }
 
 .loading::before {
   content: '';
   display: inline-block;
   margin: 1rem;
-  width: 2rem;
-  height: 2rem;
+  width: 1em;
+  height: 1em;
   border-radius: 50%;
-  border: 5px solid var(--dark-color);
-  border-top: 5px solid transparent;
+  border: 0.2em solid var(--dark-color);
+  border-top: 0.2em solid transparent;
   animation: spin 0.5s linear infinite;
 }
 
@@ -193,9 +222,8 @@ dd {
   }
 }
 @media (min-width: 800px) {
-  .form {
-    width: 40rem;
-    margin: 0 auto;
+  .has-data .form {
+    padding: 0 calc(50vw - 20rem) 0.8rem;
   }
   .form__search-wpr {
     width: unset;
