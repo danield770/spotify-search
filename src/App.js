@@ -85,9 +85,9 @@ const App = () => {
   return (
     <Router>
       <Route path='/spotify-search/callback'>
-        <Redirect to='/spotify-search/' />
+        <Redirect to='/spotify-search' />
       </Route>
-      <Route path='/spotify-search/'>
+      <Route path='/spotify-search'>
         <main className={`app ${data?.items?.length > 0 ? 'has-data' : ''}`}>
           <h1 className='search-header sticky'>
             <span aria-hidden='true'>
