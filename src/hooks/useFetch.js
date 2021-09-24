@@ -1,37 +1,107 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { chooseRelevantItemData } from '../utils/helper';
 
-function useFetch(url, options) {
-  const [data, setData] = useState(null);
+function useFetch(url, options, offset) {
+  const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [hasNext, setHasNext] = useState(false);
+
+  const sendQuery = useCallback(async () => {
+    try {
+      await setIsLoading(true);
+      console.log('useFetch: token is: ', options.Authorization);
+      const res = await fetch(`${url}&offset=${offset}`, { options });
+      const json = await res.json();
+      setIsLoading(false);
+      console.log('useFetch: setting data...', json);
+      //   setData({
+      //     href: json.tracks.href,
+      //     total: json.tracks.total,
+      //     next: json.tracks.next,
+      //     previous: json.tracks.previous,
+      //     items: [...chooseRelevantItemData(json.tracks.items)],
+      //   });
+
+      if (json.error !== undefined) {
+        setData(json);
+        return;
+      }
+
+      setData((prev) => {
+        if (json.tracks.offset === 0) {
+          // hit a new request
+          return {
+            href: json.tracks.href,
+            total: json.tracks.total,
+            next: json.tracks.next,
+            previous: json.tracks.previous,
+            items: [...chooseRelevantItemData(json.tracks.items)],
+          };
+        } else {
+          setHasNext(json.tracks.next !== null);
+          return {
+            ...prev,
+            next: json.tracks.next,
+            previous: json.tracks.previous,
+            items: [
+              ...prev.items,
+              ...chooseRelevantItemData(json.tracks.items),
+            ],
+          };
+        }
+      });
+    } catch (err) {
+      setIsLoading(false);
+      setData(err);
+    }
+  }, [url, offset]);
 
   useEffect(() => {
-    console.log('useFetch: url: ', url);
-    if (url) {
-      setIsLoading(true);
-      setData(null);
-      fetch(url, { options })
-        .then((res) => res.json())
-        .then((json) => {
-          setIsLoading(false);
-          if (typeof json === 'string') {
-            throw new Error(json);
-          }
-          setData(json);
-        })
-        .catch((err) => {
-          setIsLoading(false);
-        });
-    }
-  }, [url, options]);
+    sendQuery(url);
+  }, [url, sendQuery]);
 
   return { data, isLoading };
-}
+  //   useEffect(() => {
+  //     console.log('useFetch: url: ', url);
+  //     if (!url) return;
+  //     console.log('headers: ', options);
+  //     setIsLoading(true);
+  //     fetch(url, { options })
+  //       .then((res) => res.json())
+  //       .then((json) => {
+  //         setIsLoading(false);
+  //         console.log('useFetch: setting data...', json);
+  //         setData((prev) => {
+  //           if (json?.tracks?.offset === 0) {
+  //             // hit a new request
+  //             return {
+  //               href: json.tracks.href,
+  //               total: json.tracks.total,
+  //               next: json.tracks.next,
+  //               previous: json.tracks.previous,
+  //               items: [...chooseRelevantItemData(json.tracks.items)],
+  //             };
+  //           } else {
+  //             return {
+  //               ...prev,
+  //               total: json?.tracks?.total,
+  //               next: json?.tracks?.next,
+  //               previous: json?.tracks?.previous,
+  //               items: [
+  //                 ...prev?.items,
+  //                 ...chooseRelevantItemData(json?.tracks?.items),
+  //               ],
+  //             };
+  //           }
+  //         });
+  //       })
+  //       .catch((err) => {
+  //         setIsLoading(false);
+  //         setData(err);
+  //       });
+  //   }, [url, options]);
 
-// const response = await fetch(url);
-//       const result = await response.json();
-//       // console.log('result: ', result);
-//       if (typeof result === 'string') {
-//         throw new Error(result);
-//       }
+  //   return { data, isLoading };
+}
 
 export default useFetch;

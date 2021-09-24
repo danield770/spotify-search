@@ -1,4 +1,6 @@
 export const encodeSpaces = (str) => str.replaceAll(' ', '+'); // not necessary!
+export const supportUnicodeText = (str) =>
+  decodeURIComponent(JSON.parse('"' + str.replace(/"/g, '\\"') + '"'));
 
 export const sortByKey = (array, key, isReversed) => {
   //   console.log('unsorted arr: ', array);

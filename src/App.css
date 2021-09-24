@@ -5,7 +5,7 @@
   /* remove default focus style */
   outline: none;
   /* custom focus styles */
-  box-shadow: 0 0 2px 2px var(--light-color);
+  box-shadow: 0 0 2px 1px var(--light-color);
 }
 :root {
   --h: 120;
@@ -22,10 +22,10 @@ body {
 .app-wpr {
   display: grid;
   justify-content: center;
-  min-height: 100vh;
 }
 .app {
   text-align: center;
+  padding-bottom: 5rem;
 }
 .app:not(.has-data) {
   margin: auto 1rem;
@@ -77,12 +77,14 @@ body {
   display: grid;
   grid-template-columns: 1fr auto;
   grid-column: span 2;
+  width: 94vw;
+  margin: auto;
 }
 .form__input {
   height: 2rem;
   padding: 0.2rem 0.5rem;
   border: solid var(--color);
-  border-width: 2px 0;
+  border-width: 2px 0 2px 2px;
 }
 .form__btn {
   background: var(--color);
@@ -90,16 +92,9 @@ body {
   border: 0;
   padding: 0 0.5rem;
 }
-.form__sort-wpr {
-}
-.form__sort {
-}
-.form__filter-wpr {
-}
-.form__filter {
-}
 .albums-count {
   height: 2rem;
+  margin-bottom: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -111,7 +106,7 @@ body {
   margin: 0;
   padding: 0;
   overflow: auto;
-  max-height: calc(100vh - 9rem);
+  max-height: calc(100vh - 5rem);
 }
 
 .album {
@@ -165,10 +160,46 @@ dd {
   width: 1px;
   overflow: hidden;
 }
+/* .spinner {
+  display: none;
+  align-items: center;
+} */
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color);
+}
+
+.loading::before {
+  content: '';
+  display: inline-block;
+  margin: 1rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 5px solid var(--dark-color);
+  border-top: 5px solid transparent;
+  animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 @media (min-width: 800px) {
   .form {
     width: 40rem;
     margin: 0 auto;
+  }
+  .form__search-wpr {
+    width: unset;
+    margin: unset;
   }
   .has-data .form__search-wpr {
     grid-gap: 1rem;

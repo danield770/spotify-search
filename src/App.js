@@ -1,25 +1,47 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import SearchForm from './components/SearchForm';
 import Results from './components/Results';
 import Cookies from 'js-cookie';
 import { SpotifyAuth, Scopes } from 'react-spotify-auth';
-import { encodeSpaces, chooseRelevantItemData } from './utils/helper';
+import {
+  encodeSpaces,
+  supportUnicodeText,
+  chooseRelevantItemData,
+} from './utils/helper';
+
+// import useFetch from './hooks/useFetch';
 
 const App = () => {
-  const initialState = {
-    items: [],
-    limit: 20,
-    previous: '',
-    next: '',
-    total: 0,
-  };
   const token = Cookies.get('spotifyAuthToken');
+  console.log('token is: ', token);
   console.log('rendering spotify app...');
-  // const url = 'https://api.spotify.com/v1/search?query=Benny+Friedman+year:2021-2021&type=track&market=US&offset=0&limit=5';
   const [url, setUrl] = useState('');
-  const [data, setData] = useState(initialState);
+  const [data, setData] = useState({});
   const [sortBy, setSortBy] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasNext, setHasNext] = useState(false);
+  const [offset, setOffset] = useState(0);
+  // const headers = {
+  //   'Content-Type': 'application/json',
+  //   Authorization: `Bearer ${token}`,
+  // };
+  // const { data, isLoading } = useFetch(url, headers, 0);
+
+  const observer = useRef();
+  const fifthLastItem = useCallback(
+    (node) => {
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasNext) {
+          setHasNext((prev) => prev + 20);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isLoading, hasNext]
+  );
 
   useEffect(() => {
     if (!url) return;
@@ -30,33 +52,56 @@ const App = () => {
     console.log('url: ', url);
     console.log('headers: ', headers);
     const getData = async () => {
-      const res = await fetch(url, { headers });
+      setIsLoading(true);
+      const res = await fetch(`${url}&offset=${offset}`, { headers });
       const json = await res.json();
+      setIsLoading(false);
       console.log('setting data...', json);
       if (json.error !== undefined) {
         setData(json);
-      } else {
-        setData((previousData) => ({
-          ...previousData,
-          total: json.tracks.total,
-          next: json.tracks.next,
-          previous: json.tracks.previous,
-          items: [
-            ...previousData.items,
-            ...chooseRelevantItemData(json.tracks.items),
-          ],
-        }));
+        return;
       }
+
+      setData((prev) => {
+        if (json.tracks.offset === 0) {
+          // hit a new request
+          return {
+            href: json.tracks.href,
+            total: json.tracks.total,
+            next: json.tracks.next,
+            previous: json.tracks.previous,
+            items: [...chooseRelevantItemData(json.tracks.items)],
+          };
+        } else {
+          setHasNext(json.tracks.next !== null);
+          return {
+            ...prev,
+            next: json.tracks.next,
+            previous: json.tracks.previous,
+            items: [
+              ...prev.items,
+              ...chooseRelevantItemData(json.tracks.items),
+            ],
+          };
+        }
+      });
     };
     getData();
-  }, [url, token]);
+  }, [url, token, offset]);
 
   const onFormSubmit = (input) => {
     const yearRange = input.filter ? `+year:${input.filter}` : '';
+    console.log('input text:', input.text);
+    console.log(
+      'decoded input text:',
+      encodeSpaces(supportUnicodeText(input.text))
+    );
+
     const url = `https://api.spotify.com/v1/search?query=${encodeSpaces(
-      input.text
-    )}${yearRange}&type=track&market=US&offset=0`;
+      supportUnicodeText(input.text)
+    )}${yearRange}&type=track&market=US`;
     console.log('url: ', url);
+    sortBy && setSortBy(sortBy);
     setUrl(url);
   };
   const onSort = (value) => {
@@ -76,7 +121,13 @@ const App = () => {
 
       <SearchForm onFormSubmit={onFormSubmit} onSort={onSort} />
       {token ? (
-        <Results data={data} sortBy={sortBy} />
+        <Results
+          data={data}
+          sortBy={sortBy}
+          isLoading={isLoading}
+          observer={observer}
+          fifthLastItem={fifthLastItem}
+        />
       ) : (
         // Display the login page
         <SpotifyAuth
