@@ -4,7 +4,7 @@ import SearchForm from './components/SearchForm';
 import Results from './components/Results';
 import Cookies from 'js-cookie';
 import { SpotifyAuth, Scopes } from 'react-spotify-auth';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+// import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import {
   encodeSpaces,
   supportUnicodeText,
@@ -83,39 +83,40 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <Route exact path='/spotify-search/callback'>
-        <Redirect to='/spotify-search/' />
-      </Route>
-      <Route path='/spotify-search/'>
-        <main className={`app ${data?.items?.length > 0 ? 'has-data' : ''}`}>
-          <h1 className='search-header sticky'>
-            <span aria-hidden='true'>
-              Sp<span className='icon-logo'>o</span>tify
-            </span>
-            <span className='offscreen'>Spotify</span>
-            <span className='icon-search'>Search</span>
-          </h1>
+    // <Router>
+    //   <Route exact path='/spotify-search/callback'>
+    //     <Redirect to='/spotify-search/' />
+    //   </Route>
+    //   <Route path='/spotify-search/'>
 
-          <SearchForm onFormSubmit={onFormSubmit} onSort={onSort} />
-          {token ? (
-            <Results
-              data={data}
-              sortBy={sortBy}
-              isLoading={isLoading}
-              onFetchMore={onFetchMore}
-            />
-          ) : (
-            // Display the login page
-            <SpotifyAuth
-              redirectUri='https://danield770.github.io/spotify-search/callback'
-              clientID={process.env.REACT_APP_CLIENT_ID}
-              scopes={[Scopes.userReadPrivate, 'user-read-email']} // either style will work
-            />
-          )}
-        </main>
-      </Route>
-    </Router>
+    //   </Route>
+    // </Router>
+    <main className={`app ${data?.items?.length > 0 ? 'has-data' : ''}`}>
+      <h1 className='search-header sticky'>
+        <span aria-hidden='true'>
+          Sp<span className='icon-logo'>o</span>tify
+        </span>
+        <span className='offscreen'>Spotify</span>
+        <span className='icon-search'>Search</span>
+      </h1>
+
+      <SearchForm onFormSubmit={onFormSubmit} onSort={onSort} />
+      {token ? (
+        <Results
+          data={data}
+          sortBy={sortBy}
+          isLoading={isLoading}
+          onFetchMore={onFetchMore}
+        />
+      ) : (
+        // Display the login page
+        <SpotifyAuth
+          redirectUri='https://danield770.github.io/spotify-search/'
+          clientID={process.env.REACT_APP_CLIENT_ID}
+          scopes={[Scopes.userReadPrivate, 'user-read-email']} // either style will work
+        />
+      )}
+    </main>
   );
 };
 export default App;
