@@ -110,7 +110,7 @@ const App = () => {
       ) : (
         // Display the login page
         <SpotifyAuth
-          redirectUri='http://localhost:3000/callback'
+          redirectUri='https://danield770.github.io/spotify-search/callback'
           clientID={process.env.REACT_APP_CLIENT_ID}
           scopes={[Scopes.userReadPrivate, 'user-read-email']} // either style will work
         />
