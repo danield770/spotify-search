@@ -4,6 +4,7 @@ import SearchForm from './components/SearchForm';
 import Results from './components/Results';
 import Cookies from 'js-cookie';
 import { SpotifyAuth, Scopes } from 'react-spotify-auth';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import {
   encodeSpaces,
   supportUnicodeText,
@@ -14,8 +15,6 @@ import {
 
 const App = () => {
   const token = Cookies.get('spotifyAuthToken');
-  // console.log('token is: ', token);
-  // console.log('rendering spotify app...');
   const [url, setUrl] = useState('');
   const [data, setData] = useState({});
   const [sortBy, setSortBy] = useState('');
@@ -67,12 +66,6 @@ const App = () => {
 
   const onFormSubmit = (input) => {
     const yearRange = input.filter ? `+year:${input.filter}` : '';
-    // console.log('input text:', input.text);
-    // console.log(
-    //   'decoded input text:',
-    //   encodeSpaces(supportUnicodeText(input.text))
-    // );
-
     const url = `https://api.spotify.com/v1/search?query=${encodeSpaces(
       supportUnicodeText(input.text)
     )}${yearRange}&type=track&market=US`;
@@ -90,32 +83,36 @@ const App = () => {
   };
 
   return (
-    <main className={`app ${data?.items?.length > 0 ? 'has-data' : ''}`}>
-      <h1 className='search-header sticky'>
-        <span aria-hidden='true'>
-          Sp<span className='icon-logo'>o</span>tify
-        </span>
-        <span className='offscreen'>Spotify</span>
-        <span className='icon-search'>Search</span>
-      </h1>
+    <Router>
+      <Route path='/spotify-search/'>
+        <main className={`app ${data?.items?.length > 0 ? 'has-data' : ''}`}>
+          <h1 className='search-header sticky'>
+            <span aria-hidden='true'>
+              Sp<span className='icon-logo'>o</span>tify
+            </span>
+            <span className='offscreen'>Spotify</span>
+            <span className='icon-search'>Search</span>
+          </h1>
 
-      <SearchForm onFormSubmit={onFormSubmit} onSort={onSort} />
-      {token ? (
-        <Results
-          data={data}
-          sortBy={sortBy}
-          isLoading={isLoading}
-          onFetchMore={onFetchMore}
-        />
-      ) : (
-        // Display the login page
-        <SpotifyAuth
-          redirectUri='https://danield770.github.io/spotify-search/callback'
-          clientID={process.env.REACT_APP_CLIENT_ID}
-          scopes={[Scopes.userReadPrivate, 'user-read-email']} // either style will work
-        />
-      )}
-    </main>
+          <SearchForm onFormSubmit={onFormSubmit} onSort={onSort} />
+          {token ? (
+            <Results
+              data={data}
+              sortBy={sortBy}
+              isLoading={isLoading}
+              onFetchMore={onFetchMore}
+            />
+          ) : (
+            // Display the login page
+            <SpotifyAuth
+              redirectUri='https://danield770.github.io/spotify-search/callback'
+              clientID={process.env.REACT_APP_CLIENT_ID}
+              scopes={[Scopes.userReadPrivate, 'user-read-email']} // either style will work
+            />
+          )}
+        </main>
+      </Route>
+    </Router>
   );
 };
 export default App;
