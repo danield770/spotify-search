@@ -1,5 +1,9 @@
 # Assignment Notes
 
+0) After I deployed I noticed that I was having trouble configuring the spotify redirt url for github pages.
+   
+   It was working for me very well locally. I willl try to fix this on Sunday.
+
 1) The app is deployed on github pages at: https://danield770.github.io/spotify-search/
 
 2) The app is responsive with 3 breakpoint layouts, so be sure to resize to various widths
