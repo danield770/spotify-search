@@ -4,7 +4,7 @@ import SearchForm from './components/SearchForm';
 import Results from './components/Results';
 import Cookies from 'js-cookie';
 import { SpotifyAuth, Scopes } from 'react-spotify-auth';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import {
   encodeSpaces,
   supportUnicodeText,
@@ -84,6 +84,9 @@ const App = () => {
 
   return (
     <Router>
+      <Route exact path='/spotify-search/callback'>
+        <Redirect to='/spotify-search/' />
+      </Route>
       <Route path='/spotify-search/'>
         <main className={`app ${data?.items?.length > 0 ? 'has-data' : ''}`}>
           <h1 className='search-header sticky'>
