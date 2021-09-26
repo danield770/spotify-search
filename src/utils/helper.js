@@ -1,9 +1,19 @@
+export const getParamValues = (url) => {
+  return url
+    .slice(1)
+    .split('&')
+    .reduce((prev, curr) => {
+      const [title, value] = curr.split('=');
+      prev[title] = value;
+      return prev;
+    }, {});
+};
+
 export const encodeSpaces = (str) => str.replaceAll(' ', '+'); // not necessary!
 export const supportUnicodeText = (str) =>
   decodeURIComponent(JSON.parse('"' + str.replace(/"/g, '\\"') + '"'));
 
 export const sortByKey = (array, key, isReversed) => {
-  //   console.log('unsorted arr: ', array);
   return array.slice().sort((a, b) => {
     const x = a[key];
     const y = b[key];
@@ -13,14 +23,6 @@ export const sortByKey = (array, key, isReversed) => {
     return x < y ? -1 : x > y ? 1 : 0;
   });
 };
-
-// function sortByKey(array, key) {
-//   return array.sort(function (a, b) {
-//     var x = a[key];
-//     var y = b[key];
-//     return x < y ? -1 : x > y ? 1 : 0;
-//   });
-// }
 
 export const chooseRelevantItemData = (items) =>
   items.map(
