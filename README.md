@@ -1,10 +1,7 @@
 # Assignment Notes
 
-0) After I deployed I noticed that I was having trouble configuring the spotify redirt url for github pages.
-   
-   It was working for me very well locally. I willl try to fix this on Sunday.
 
-1) The app is deployed on github pages at: https://danield770.github.io/spotify-search/
+1) The app is deployed on github pages at: https://spotifunix.herokuapp.com/
 
 2) The app is responsive with 3 breakpoint layouts, so be sure to resize to various widths
 
@@ -17,9 +14,8 @@
 
    Of course, in a real app, there would be the appropriate UI for the user to choose the theme
    
-4) I wanted to use a custom hook to fetch the data, but I was having an issue with authentication which I couldn't figure out.
 
-5) Regarding lazy loading of the images: 
+4) Regarding lazy loading of the images: 
 
 I have added the loading='lazy' native property (see [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-loading)) which has pretty good browser support (see [caniuse](https://caniuse.com/loading-lazy-attr))
 
