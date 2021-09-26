@@ -10,13 +10,13 @@ const App = () => {
     <div>
       <Router>
         <Switch>
-          <Route path='/spotify-search/callback'>
+          <Route path='/callback'>
             <Redirect />
           </Route>
-          <Route path='/spotify-search/search'>
+          <Route path='/search'>
             <Search />
           </Route>
-          <Route path='/spotify-search/'>
+          <Route path='/'>
             <Login />
           </Route>
         </Switch>

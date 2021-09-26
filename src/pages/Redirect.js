@@ -13,7 +13,7 @@ const Redirect = () => {
     // console.log('token = ', access_token);
     localStorage.setItem('params', JSON.stringify(access_token));
     localStorage.setItem('expiry_time', expiryTime);
-    history.push('/spotify-search/search');
+    history.push('/search');
   }, []);
   return null;
 };
