@@ -62,7 +62,7 @@ const Results = ({ data, sortBy, isLoading, onFetchMore }) => {
             onFetchMore(data.next);
           }}
         >
-          Load more albums
+          {isLoading ? 'Loading...' : 'Load more albums'}
         </button>
       )}
     </div>

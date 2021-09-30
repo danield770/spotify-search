@@ -2,17 +2,19 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import SearchForm from '../components/SearchForm';
 import Results from '../components/Results';
+import { useHistory, Redirect } from 'react-router-dom';
 import {
   encodeSpaces,
   supportUnicodeText,
   chooseRelevantItemData,
 } from '../utils/helper';
 
-const Search = () => {
+const Search = ({ isValidSession }) => {
   const [url, setUrl] = useState('');
   const [data, setData] = useState({});
   const [sortBy, setSortBy] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     if (!url) return;
@@ -59,7 +61,30 @@ const Search = () => {
     };
     getData();
   }, [url]);
+
+  if (!isValidSession()) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/',
+          state: {
+            token_expired: true,
+          },
+        }}
+      />
+    );
+  }
+
   const onFormSubmit = (input) => {
+    // TODO: check if this code is necessary OR if I can rely on the redirect
+    if (!isValidSession()) {
+      history.push({
+        pathname: '/',
+        state: {
+          token_expired: true,
+        },
+      });
+    }
     const yearRange = input.filter ? `+year:${input.filter}` : '';
     const url = `https://api.spotify.com/v1/search?query=${encodeSpaces(
       supportUnicodeText(input.text)
@@ -76,27 +101,35 @@ const Search = () => {
   const onFetchMore = (url) => {
     setUrl(url);
   };
+  let results;
+  if (data?.total > 0) {
+    results = (
+      <Results
+        data={data}
+        sortBy={sortBy}
+        isLoading={isLoading}
+        onFetchMore={onFetchMore}
+      />
+    );
+  } else if (data?.total === 0) {
+    results = <div>Sorry, no results found 🙁 </div>;
+  } else if (data.error) {
+    results = (
+      <p className='error'>
+        It looks like there was a {data.error?.status || ''} network error...
+        since: "{data.error.message}"
+      </p>
+    );
+  } else if (isLoading) {
+    results = <div className='loading'>Loading...</div>;
+  }
 
   return (
     <main className={`app ${data?.items?.length > 0 ? 'has-data' : ''}`}>
       <Header />
 
       <SearchForm onFormSubmit={onFormSubmit} onSort={onSort} />
-      {data?.items?.length > 0 && (
-        <Results
-          data={data}
-          sortBy={sortBy}
-          isLoading={isLoading}
-          onFetchMore={onFetchMore}
-        />
-      )}
-      {data.error && (
-        <p className='error'>
-          It looks like there was a {data.error?.status || ''} network error...
-          since: "{data.error.message}"
-        </p>
-      )}
-      {isLoading && <div className='loading'>Loading...</div>}
+      {results}
     </main>
   );
 };
