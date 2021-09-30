@@ -19,16 +19,7 @@
 body {
   margin: 0;
 }
-.login {
-  text-align: center;
-  border: 1px solid green;
-  padding: 4rem;
-  position: absolute;
-  display: grid;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+
 .app-wpr {
   display: grid;
   justify-content: center;
@@ -40,144 +31,45 @@ body {
 .app:not(.has-data) {
   margin: auto 1rem;
 }
-.app:not(.has-data) label,
+/* .app:not(.has-data) label,
 .app:not(.has-data) select {
   display: none;
-}
-.app:not(.has-data) .search-header {
+} */
+/* .app:not(.has-data) .search-header {
   font-size: 3.5rem;
-}
-.app:not(.has-data) .form__input {
+} */
+/* .app:not(.has-data) .form__input {
   border: 1px solid var(--color);
   border-radius: 1rem 0 0 1rem;
 }
 .app:not(.has-data) .form__btn {
   border-radius: 0 1rem 1rem 0;
-}
+} */
 /* keep main header, form and result count in viewport */
-.has-data .sticky {
+/* .has-data .sticky {
+  position: sticky;
+  z-index: 1;
+} */
+.sticky {
   position: sticky;
   z-index: 1;
 }
-.has-data .search-header {
+/* .has-data .search-header {
   top: 0;
   margin: 0;
   padding: 0.67em 0;
   background-color: white;
-}
-.has-data .form {
-  top: 50px;
-  background-color: white;
-}
-.has-data .albums-count {
+} */
+
+/* .has-data .albums-count {
   top: 117px;
-}
+} */
 /* TODO: find a less-hackier solution than sticky  */
 
-.search-header {
-  color: var(--color);
-  font-family: 'Lobster', cursive;
-  font-size: 1.2rem;
-}
-.icon-logo {
-  visibility: hidden;
-  position: relative;
-}
-.icon-logo::before {
-  content: '';
-  visibility: visible;
-  background: url(assets/svg/spotify.svg) 50% 50% / 2.5rem 2.5rem no-repeat;
-  width: 0.5em;
-  height: 0.5em;
-  display: inline-block;
-  position: absolute;
-  top: 42%;
-  left: -9%;
-  box-shadow: 0 0 0 2px var(--color);
-  border-radius: 50%;
-}
-.form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
-  grid-gap: 0.5rem;
-  font-size: 0.9rem;
-  padding-bottom: 0.5rem;
-}
-.form__search-wpr {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-column: span 2;
-  width: 94vw;
-  margin: auto;
-}
-.form__input {
-  height: 2rem;
-  padding: 0.2rem 0.5rem;
-  border: solid var(--color);
-  border-width: 2px 0 2px 2px;
-}
-.form__btn {
-  background: var(--color);
-  color: white;
-  border: 0;
-  padding: 0 0.5rem;
-  cursor: pointer;
-}
-.albums-count {
-  height: 3rem;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--very-light-color) content-box;
-  color: var(--dark-color);
-}
-.albums {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.album {
-  display: grid;
-  border-bottom: 5px solid var(--color);
-}
-.album__img {
-  width: 100vw;
-}
-.album__audio {
-  width: 100vw;
-}
-::-webkit-media-controls-enclosure {
-  border-radius: 0;
-}
-.album__content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  grid-gap: 0.5rem;
-  align-items: center;
-  text-align: left;
-  margin: 1rem;
-}
-.album__track {
-  text-transform: uppercase;
-  font-weight: bold;
-  color: var(--color);
-  font-size: 0.6rem;
-}
 dt::after {
   content: ': ';
 }
-dt {
-  margin-bottom: 0.2rem;
-  font-weight: bold;
-}
-dd {
-  margin: 0;
-}
+
 .btn--primary {
   border: 1px solid var(--dark-color);
   border-radius: 2rem;
@@ -229,84 +121,5 @@ dd {
   }
   to {
     transform: rotate(360deg);
-  }
-}
-@media (min-width: 800px) {
-  .has-data .form {
-    padding: 0 calc(50vw - 20rem) 0.8rem;
-  }
-  .form__search-wpr {
-    width: unset;
-    margin: unset;
-  }
-  .has-data .form__search-wpr {
-    grid-gap: 1rem;
-  }
-  .form__input {
-    height: 2rem;
-    padding: 0.2rem 0.5rem;
-    border: 2px solid var(--color);
-  }
-  .form__sort-wpr {
-    justify-self: flex-start;
-  }
-  .form__filter-wpr {
-    justify-self: flex-end;
-  }
-  .album {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr auto;
-  }
-  .album__img {
-    width: 50vw;
-    border-right: 5px solid var(--color);
-  }
-  .album__audio {
-    width: 50vw;
-    grid-row: 2/3;
-    border-right: 5px solid var(--color);
-  }
-  .album__content {
-    display: grid;
-    grid-column: 2/3;
-    grid-row: span 2;
-  }
-}
-@media (min-width: 1200px) {
-  .albums {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
-    grid-gap: 2rem;
-    justify-content: space-between;
-    width: 96vw;
-  }
-  .album {
-    grid-template-columns: auto;
-    grid-template-rows: auto auto;
-    border: 0;
-  }
-  .album:hover .album__content {
-    visibility: visible;
-  }
-  .album__img {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-    width: 100%;
-    border: 0;
-  }
-  .album__audio {
-    width: 100%;
-    grid-row: 2 / 3;
-    border: 0;
-  }
-  .album__content {
-    visibility: hidden;
-    background: var(--very-light-color);
-    margin: 0;
-    padding: 1rem;
-    color: var(--dark-color);
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
   }
 }

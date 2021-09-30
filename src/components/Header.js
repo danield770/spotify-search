@@ -1,12 +1,20 @@
 import React from 'react';
-const Header = () => {
+import styles from './Header.module.css';
+
+const Header = ({ hasData }) => {
   return (
-    <h1 className='search-header sticky'>
+    <h1
+      className={`${styles['search-header']} ${
+        hasData
+          ? `sticky ${styles['search-header--small']}`
+          : styles['search-header--large']
+      } `}
+    >
       <span aria-hidden='true'>
-        Sp<span className='icon-logo'>o</span>tify
+        Sp<span className={styles['icon-logo']}>o</span>tify
       </span>
-      <span className='offscreen'>Spotify</span>
-      <span className='icon-search'>Search</span>
+      <span className='offscreen'>Spotify</span>&nbsp;
+      <span>Search</span>
     </h1>
   );
 };

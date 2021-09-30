@@ -1,0 +1,111 @@
+.albums-count {
+  height: 3rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--very-light-color) content-box;
+  color: var(--dark-color);
+  top: 117px;
+}
+
+.albums {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.album {
+  display: grid;
+  border-bottom: 5px solid var(--color);
+}
+.album dt {
+  margin-bottom: 0.2rem;
+  font-weight: bold;
+}
+.album dd {
+  margin: 0;
+}
+.album__img {
+  width: 100vw;
+}
+.album__audio {
+  width: 100vw;
+}
+::-webkit-media-controls-enclosure {
+  border-radius: 0;
+}
+.album__content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 0.5rem;
+  align-items: center;
+  text-align: left;
+  margin: 1rem;
+}
+.album__track {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: var(--color);
+  font-size: 0.6rem;
+}
+@media (min-width: 800px) {
+  .album {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr auto;
+  }
+  .album__img {
+    width: 50vw;
+    border-right: 5px solid var(--color);
+  }
+  .album__audio {
+    width: 50vw;
+    grid-row: 2/3;
+    border-right: 5px solid var(--color);
+  }
+  .album__content {
+    display: grid;
+    grid-column: 2/3;
+    grid-row: span 2;
+  }
+}
+@media (min-width: 1200px) {
+  .albums {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+    grid-gap: 2rem;
+    justify-content: space-between;
+    width: 96vw;
+  }
+  .album {
+    grid-template-columns: auto;
+    grid-template-rows: auto auto;
+    border: 0;
+  }
+  .album:hover .album__content {
+    visibility: visible;
+  }
+  .album__img {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    width: 100%;
+    border: 0;
+  }
+  .album__audio {
+    width: 100%;
+    grid-row: 2 / 3;
+    border: 0;
+  }
+  .album__content {
+    visibility: hidden;
+    background: var(--very-light-color);
+    margin: 0;
+    padding: 1rem;
+    color: var(--dark-color);
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+}
