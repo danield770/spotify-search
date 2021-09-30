@@ -1,0 +1,31 @@
+.search-header {
+  color: var(--color);
+  font-family: 'Lobster', cursive;
+  font-size: 1.2rem;
+}
+.search-header--large {
+  font-size: 3.5rem;
+}
+.search-header--small {
+  top: 0;
+  margin: 0;
+  padding: 0.67em 0;
+  background-color: white;
+}
+.icon-logo {
+  visibility: hidden;
+  position: relative;
+}
+.icon-logo::before {
+  content: '';
+  visibility: visible;
+  background: url(../assets/svg/spotify.svg) 50% 50% / 2.5rem 2.5rem no-repeat;
+  width: 0.5em;
+  height: 0.5em;
+  display: inline-block;
+  position: absolute;
+  top: 42%;
+  left: -9%;
+  box-shadow: 0 0 0 2px var(--color);
+  border-radius: 50%;
+}

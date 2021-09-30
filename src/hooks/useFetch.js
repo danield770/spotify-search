@@ -20,10 +20,10 @@ function useFetch(url) {
     const getData = async () => {
       setIsLoading(true);
       const res = await fetch(url, { headers });
-      if (!res.ok) {
-        const message = `An error has occured: ${res.status}`;
-        throw new Error(message);
-      }
+      // if (!res.ok) {
+      //   const message = `An error has occured: ${res.status}`;
+      //   throw new Error(message);
+      // }
       const json = await res.json();
       setIsLoading(false);
       console.log('setting data...', json);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { constants } from '../utils/constants';
 import { Redirect, useLocation } from 'react-router-dom';
+import styles from './Login.module.css';
 
 const Login = ({ isValidSession }) => {
   const {
@@ -23,8 +24,8 @@ const Login = ({ isValidSession }) => {
       {isValidSession() ? (
         <Redirect to='/search' />
       ) : (
-        <div className='login'>
-          <h1 className='search-header'>
+        <div className={styles.login}>
+          <h1 className={styles['search-header']}>
             {tokenExpired
               ? 'Your token has expired. Please login again'
               : 'We first need to login to Spotify'}

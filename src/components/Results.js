@@ -1,12 +1,15 @@
 import { sortByKey } from '../utils/helper';
+import styles from './Results.module.css';
 
 const Results = ({ data, sortBy, isLoading, onFetchMore }) => {
   const isReverseSort = ['popularity', 'release_date'].includes(sortBy);
 
   return (
     <div>
-      <div className='albums-count sticky'>{data.total} Results found</div>
-      <ul className='albums'>
+      <div className={`${styles['albums-count']} sticky`}>
+        {data.total} Results found
+      </div>
+      <ul className={styles.albums}>
         {console.log('data: ', data)}
 
         {sortByKey(data.items, sortBy, isReverseSort).map(
@@ -20,18 +23,18 @@ const Results = ({ data, sortBy, isLoading, onFetchMore }) => {
             artist_name,
             album_img,
           }) => (
-            <li className='album' key={id}>
+            <li className={styles.album} key={id}>
               <img
-                className='album__img'
+                className={styles.album__img}
                 alt={name}
                 loading='lazy'
                 src={album_img}
               />
-              <audio className='album__audio' controls src={preview_url}>
+              <audio className={styles.album__audio} controls src={preview_url}>
                 Your browser does not support the
                 <code>audio</code> element.
               </audio>
-              <dl className='album__content'>
+              <dl className={styles.album__content}>
                 <div>
                   <dt>Artist name</dt>
                   <dd>{artist_name}</dd>
@@ -39,7 +42,7 @@ const Results = ({ data, sortBy, isLoading, onFetchMore }) => {
                 <div>
                   <dt>Album Name</dt>
                   <dd>{name}</dd>
-                  <dd className='album__track'>track #{track_number}</dd>
+                  <dd className={styles.album__track}>track #{track_number}</dd>
                 </div>
                 <div>
                   <dt>Release Date</dt>

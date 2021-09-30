@@ -77,10 +77,14 @@ const Search = ({ isValidSession }) => {
   }
 
   return (
-    <main className={`app ${data?.items?.length > 0 ? 'has-data' : ''}`}>
-      <Header />
+    <main className={`app ${data?.total > 0 ? 'has-data' : ''}`}>
+      <Header hasData={data?.total > 0} />
 
-      <SearchForm onFormSubmit={onFormSubmit} onSort={onSort} />
+      <SearchForm
+        onFormSubmit={onFormSubmit}
+        onSort={onSort}
+        hasData={data?.total > 0}
+      />
       {results}
     </main>
   );
