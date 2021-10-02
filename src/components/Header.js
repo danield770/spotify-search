@@ -6,7 +6,7 @@ const Header = ({ hasData }) => {
     <h1
       className={`${styles['search-header']} ${
         hasData
-          ? `sticky ${styles['search-header--small']}`
+          ? `fixed ${styles['search-header--small']}`
           : styles['search-header--large']
       } `}
     >

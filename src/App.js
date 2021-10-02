@@ -23,7 +23,7 @@ const App = () => {
     setExpiryTime(localStorage.getItem('expiry_time'));
   }, []);
   return (
-    <div>
+    <>
       <Router>
         <Switch>
           <Route path='/callback'>
@@ -37,7 +37,7 @@ const App = () => {
           </Route>
         </Switch>
       </Router>
-    </div>
+    </>
   );
 };
 export default App;

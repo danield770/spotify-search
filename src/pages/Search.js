@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import Header from '../components/Header';
 import SearchForm from '../components/SearchForm';
 import Results from '../components/Results';
+import ThemePicker from '../components/ThemePicker';
 import { useHistory, Redirect } from 'react-router-dom';
 import { encodeSpaces, supportUnicodeText } from '../utils/helper';
 import useFetch from '../hooks/useFetch';
 
 const Search = ({ isValidSession }) => {
   const [url, setUrl] = useState('');
-  // const [data, setData] = useState({});
   const [sortBy, setSortBy] = useState('');
-  // const [isLoading, setIsLoading] = useState(false);
+  const [hue, setHue] = useState(120);
   const history = useHistory();
   const { data, isLoading } = useFetch(url);
 
@@ -26,6 +26,11 @@ const Search = ({ isValidSession }) => {
       />
     );
   }
+
+  const handleThemeChange = (hue, e) => {
+    e.preventDefault();
+    setHue(hue);
+  };
 
   const onFormSubmit = (input) => {
     // TODO: check if this code is necessary OR if I can rely on the redirect
@@ -77,7 +82,8 @@ const Search = ({ isValidSession }) => {
   }
 
   return (
-    <main className={`app ${data?.total > 0 ? 'has-data' : ''}`}>
+    <main className='app' style={{ '--hue': hue }}>
+      <ThemePicker text='' handleThemeChange={handleThemeChange} />
       <Header hasData={data?.total > 0} />
 
       <SearchForm
