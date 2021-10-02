@@ -14,6 +14,9 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  padding-top: calc(
+    var(--header-height) + var(--form-height) + var(--album-count-height)
+  );
 }
 
 .album {
@@ -51,7 +54,7 @@
   color: var(--color);
   font-size: 0.6rem;
 }
-@media (min-width: 800px) {
+@media (min-width: 768px) {
   .album {
     display: grid;
     grid-template-columns: 1fr 1fr;

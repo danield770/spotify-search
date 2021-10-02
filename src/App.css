@@ -11,10 +11,10 @@
   --h: 120;
   --s: 100%;
   --l: 25;
+  --header-height: 50px;
+  --form-height: 50px;
+  --album-count-height: 48px;
   --color: hsl(var(--h), var(--s), calc(var(--l) * 1%));
-  --very-light-color: hsl(var(--h), var(--s), calc((var(--l) + 70) * 1%));
-  --light-color: hsl(var(--h), var(--s), calc((var(--l) + 10) * 1%));
-  --dark-color: hsl(var(--h), var(--s), calc((var(--l) - 10) * 1%));
 }
 body {
   margin: 0;
@@ -25,58 +25,32 @@ body {
   justify-content: center;
 }
 .app {
+  --h: var(--hue, 120);
+  --color: hsl(var(--h), var(--s), calc(var(--l) * 1%));
+  --very-light-color: hsl(var(--h), var(--s), calc((var(--l) + 70) * 1%));
+  --light-color: hsl(var(--h), var(--s), calc((var(--l) + 10) * 1%));
+  --dark-color: hsl(var(--h), var(--s), calc((var(--l) - 10) * 1%));
   text-align: center;
   padding-bottom: 5rem;
 }
-.app:not(.has-data) {
-  margin: auto 1rem;
-}
-/* .app:not(.has-data) label,
-.app:not(.has-data) select {
-  display: none;
-} */
-/* .app:not(.has-data) .search-header {
-  font-size: 3.5rem;
-} */
-/* .app:not(.has-data) .form__input {
-  border: 1px solid var(--color);
-  border-radius: 1rem 0 0 1rem;
-}
-.app:not(.has-data) .form__btn {
-  border-radius: 0 1rem 1rem 0;
-} */
-/* keep main header, form and result count in viewport */
-/* .has-data .sticky {
-  position: sticky;
-  z-index: 1;
-} */
-.sticky {
-  position: sticky;
-  z-index: 1;
-}
-/* .has-data .search-header {
-  top: 0;
-  margin: 0;
-  padding: 0.67em 0;
-  background-color: white;
-} */
 
-/* .has-data .albums-count {
-  top: 117px;
-} */
-/* TODO: find a less-hackier solution than sticky  */
+.fixed {
+  position: fixed;
+  width: 100vw;
+  z-index: 1;
+}
 
 dt::after {
   content: ': ';
 }
 
 .btn--primary {
-  border: 1px solid var(--dark-color);
+  border: 1px solid var(--color);
   border-radius: 2rem;
   height: 2.5rem;
   background: none;
   padding: 0 1rem;
-  color: green;
+  color: var(--color);
   position: relative;
   top: 2rem;
   cursor: pointer;

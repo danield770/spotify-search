@@ -1,0 +1,52 @@
+.theme-picker {
+  --theme-color: hsl(var(--hueValue, 120), 100%, 25%);
+  background: radial-gradient(
+      circle farthest-corner at 0% 0%,
+      transparent 50%,
+      var(--theme-color) 52%,
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 30% 30%,
+      var(--theme-color) 15%,
+      transparent 17%,
+      var(--theme-color) 20%,
+      transparent 22%
+    );
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  width: 3rem;
+  height: 3rem;
+  left: 0;
+  cursor: pointer;
+}
+.modal--theme {
+  --theme-color: hsl(var(--hueValue, 120), 100%, 25%);
+  position: fixed;
+  top: 0.5rem;
+  left: 3rem;
+  display: grid;
+  grid-template-columns: 1fr 5rem;
+  grid-template-rows: auto auto;
+  grid-gap: 0.5rem;
+  color: var(--theme-color);
+  border: 1px solid currentColor;
+  padding: 1rem;
+  border-radius: 1rem;
+  z-index: 3;
+  background: white;
+}
+.modal--theme__header {
+  font-size: 0.9rem;
+  grid-column: span 2;
+}
+.btn--theme {
+  color: currentColor;
+  border: 1px solid currentColor;
+  padding: 0.2rem 0;
+  background: white;
+  border-radius: 0.5rem;
+}
+.slider {
+}
