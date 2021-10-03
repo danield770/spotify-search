@@ -5,19 +5,14 @@
 
 2) The app is responsive with 3 breakpoint layouts, so be sure to resize to various widths
 
-3) The app is easily themable by simply altering the hue custom property in the developer tools (see screen shot) 
-
-
-![Screen Shot 2021-09-24 at 10 56 10](https://user-images.githubusercontent.com/4352617/134639276-c64c78de-ad01-4f89-ba34-105c2ebc32f9.png)
-
-   
-
-   Of course, in a real app, there would be the appropriate UI for the user to choose the theme
+3) I have added UI in the top left corner of the screen for the user to choose a theme color.
    
 
 4) Regarding lazy loading of the images: 
 
 I have added the loading='lazy' native property (see [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-loading)) which has pretty good browser support (see [caniuse](https://caniuse.com/loading-lazy-attr))
+
+5) The search input accepts unicode characters: eg: \u0042\u0065\u006e\u006e\u0079\u0020\u0046\u0072\u0069\u0065\u0064\u006d\u0061\u006e
 
 
 # Getting Started with Create React App
