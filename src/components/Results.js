@@ -6,7 +6,7 @@ const Results = ({ data, sortBy, isLoading, onFetchMore }) => {
 
   return (
     <div>
-      <div className={`${styles['albums-count']} sticky`}>
+      <div className={`${styles['albums-count']} fixed`}>
         {data.total} Results found
       </div>
       <ul className={styles.albums}>
